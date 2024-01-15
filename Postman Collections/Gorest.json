@@ -1,0 +1,255 @@
+{
+	"info": {
+		"_postman_id": "56c84c0c-5d46-413a-82fb-5dd48fa5f7d9",
+		"name": "Gorest API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create USer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "928e995c-d46e-4b13-85eb-82ef7466ab30",
+						"exec": [
+							"var random=Math.random().toString(36).substring(2);\r",
+							"var name=\"shri\"+random;\r",
+							"var email=\"shri\"+random+\"@gmail.com\";\r",
+							"pm.environment.set(\"name_env\",name);\r",
+							"pm.environment.set(\"email_env\",email);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "5eb23cef-12cf-401e-9b8f-f5e5b04a5496",
+						"exec": [
+							"var jsonData=JSON.parse(responseBody);\r",
+							"\r",
+							"pm.environment.set(\"id\",jsonData.id);\r",
+							"pm.test(\"Status code validation\",()=>\r",
+							"{\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Header validation\",()=>\r",
+							"{\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Connection\");\r",
+							"\r",
+							"    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"keep-alive\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "b5028885-284d-49ce-a385-c79d4b4641b8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"{{name_env}}\",\r\n \"gender\":\"male\", \r\n\"email\":\"{{email_env}}\", \r\n\"status\":\"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl_collection}}/public/v2/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f1f753d7-9251-44c5-8ea4-f06de1434c10",
+						"exec": [
+							"var jsonData=pm.response.json();\r",
+							"pm.test(\"Response Field validation\",()=>\r",
+							"{\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"id\"));\r",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"name_env\"));\r",
+							"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email_env\"));\r",
+							"}\r",
+							"\r",
+							");\r",
+							"\r",
+							"pm.test(\"Status code validation\",()=>\r",
+							"{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "608ac441-06db-4550-b665-4f2eb777a209",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl_collection}}/public/v2/users/{{id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "da241c33-cd16-4d86-93f8-41427b86f552",
+						"exec": [
+							"var random=Math.random().toString(36).substring(2);\r",
+							"var name=\"shri\"+random;\r",
+							"var email=\"shri\"+random+\"@gmail.com\";\r",
+							"pm.environment.set(\"name_env\",name);\r",
+							"pm.environment.set(\"email_env\",email);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2d965b60-868a-4ee0-b9f8-747443246079",
+						"exec": [
+							"var jsonData=pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code validation\",()=>\r",
+							"{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response Field validation\",()=>\r",
+							"{\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"id\"));\r",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"name_env\"));\r",
+							"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"email_env\"));\r",
+							"}\r",
+							"\r",
+							");\r",
+							"pm.test(\"Header validation\",()=>\r",
+							"{\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Connection\");\r",
+							"\r",
+							"    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"keep-alive\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "a193e807-1a52-491e-9efe-5b9c69ceed13",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"{{name_env}}\",\r\n \"gender\":\"male\", \r\n\"email\":\"{{email_env}}\", \r\n\"status\":\"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl_collection}}/public/v2/users/{{id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "10609b4c-7d46-419e-97df-5b0db163cff9",
+						"exec": [
+							"\r",
+							"pm.test(\"Status code validation\",()=>\r",
+							"{\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Header validation\",()=>\r",
+							"{\r",
+							"    pm.response.to.have.header(\"Connection\");\r",
+							"\r",
+							"    pm.expect(pm.response.headers.get(\"Connection\")).to.eql(\"keep-alive\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.environment.unset(\"email_env\");\r",
+							"pm.environment.unset(\"name_env\");\r",
+							"pm.environment.unset(\"id\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "05e9dea6-55d2-425b-8276-646da2e2dea7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{baseUrl_collection}}/public/v2/users/{{id}}"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "c6194d6f33bf206f6c203a0a5de4f4fb8f2ad3c961bce305b1af1e9d7c0a771b"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f8b93112-a5e5-45bf-87f5-6caf05f40c74",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "071f077b-5d2e-4260-aa52-d2eb350277c1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl_collection",
+			"value": "https://gorest.co.in",
+			"type": "string"
+		}
+	]
+}
